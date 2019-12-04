@@ -1,0 +1,22 @@
+{
+  "name": "03-run-jxs-preprocessor",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Ewan \"ScottChak\" BURNS",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "npm run build",
+    "start": "http-server .dist",
+    "build": "babel ./src -d ./.dist --presets react-app/production",
+    "watch": "npm run build",
+    "debug": "npm run start",
+    "dev": "npm run build && concurrently \"npm run debug\" \"npm run watch\""
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-react-app": "^9.0.2",
+    "concurrently": "^5.0.0",
+    "http-server": "^0.12.0"
+  }
+}
