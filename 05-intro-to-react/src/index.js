@@ -3,28 +3,42 @@ import ReactDOM from "react-dom";
 import "./index.css";
 
 class Square extends React.Component {
-  // Adding constructor to init a state with a value field
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null
-    };
-  }
-
   render() {
-    // Displaying value from state "value"
-    // Listening to click to set value
+    // Displaying value from props field "value"
+    // Listening to click and forwarding to props field "onClick"
     return (
-      <button className="square" onClick={() => this.setState({ value: "X" })}>
-        {this.state.value}
+      <button className="square" onClick={() => this.props.onClick()}>
+        {this.props.value}
       </button>
     );
   }
 }
 
 class Board extends React.Component {
-  renderSquare() {
-    return <Square />;
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null)
+    };
+  }
+
+  // Updating state field "squares" with correct index
+  handleClick(i) {
+    // const for value that is readonly
+    // Creating duplicate of squares
+    const squares = this.state.squares.slice();
+
+    // Updating value
+    squares[i] = "X";
+
+    // Updating state without mutation
+    this.setState({ squares: squares });
+  }
+
+  renderSquare(idx) {
+    // Displaying value from state field "squares" with correct index
+    // Passing onClick listener to props of Square
+    return <Square value={this.state.squares[idx]} onClick={() => this.handleClick(idx)} />;
   }
 
   render() {
@@ -34,19 +48,19 @@ class Board extends React.Component {
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
-          {this.renderSquare()}
-          {this.renderSquare()}
-          {this.renderSquare()}
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
         </div>
         <div className="board-row">
-          {this.renderSquare()}
-          {this.renderSquare()}
-          {this.renderSquare()}
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
         </div>
         <div className="board-row">
-          {this.renderSquare()}
-          {this.renderSquare()}
-          {this.renderSquare()}
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
         </div>
       </div>
     );
