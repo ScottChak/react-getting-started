@@ -2,16 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
-class Square extends React.Component {
-  render() {
-    // Displaying value from props field "value"
-    // Listening to click and forwarding to props field "onClick"
-    return (
-      <button className="square" onClick={() => this.props.onClick()}>
-        {this.props.value}
-      </button>
-    );
-  }
+// Square can be a function component as it is stateless
+function Square(props) {
+  // Displaying value from props field "value"
+  // Listening to click and forwarding to props field "onClick"
+  return (
+    <button className="square" onClick={() => props.onClick()}>
+      {props.value}
+    </button>
+  );
 }
 
 class Board extends React.Component {
