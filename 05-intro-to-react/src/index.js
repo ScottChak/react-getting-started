@@ -2,6 +2,32 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 
+function canPick(square) {
+  return square === null;
+}
+
+function calculateWinner(squares, players) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
+
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return players[squares[a]];
+    }
+  }
+
+  return null;
+}
+
 // Square can be a function component as it is stateless
 function Square(props) {
   // Displaying value from props field "value"
@@ -13,25 +39,48 @@ function Square(props) {
   );
 }
 
+class Player {
+  constructor(symbol) {
+    this.symbol = symbol;
+  }
+}
+
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      players: [new Player("X"), new Player("O")],
+      currentPlayer: 0,
+      winner: null
     };
   }
 
   // Updating state field "squares" with correct index
-  handleClick(i) {
-    // const for value that is readonly
-    // Creating duplicate of squares
-    const squares = this.state.squares.slice();
+  handleClick(idx) {
+    if (this.state.winner === null && canPick(this.state.squares[idx])) {
+      // const for value that is readonly
+      // Creating duplicate of squares
+      const squares = this.state.squares.slice();
 
-    // Updating value
-    squares[i] = "X";
+      // Updating value
+      squares[idx] = this.state.players[this.state.currentPlayer].symbol;
 
-    // Updating state without mutation
-    this.setState({ squares: squares });
+      const nextPlayer = (this.state.currentPlayer + 1) % 2;
+
+      const winner = calculateWinner(
+        squares,
+        this.state.players.reduce((acc, cur, i) => {
+          acc[cur.symbol] = i;
+          return acc;
+        }, {})
+      );
+
+      console.log(winner);
+
+      // Updating state without mutation
+      this.setState(Object.assign({}, this.state, { squares: squares, currentPlayer: nextPlayer, winner: winner }));
+    }
   }
 
   renderSquare(idx) {
@@ -41,7 +90,10 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = "Next player: X";
+    const status =
+      this.state.winner !== null
+        ? `Winner: ${this.state.players[this.state.winner].symbol}`
+        : `Next player: ${this.state.players[this.state.currentPlayer].symbol}`;
 
     return (
       <div>
