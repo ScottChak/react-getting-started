@@ -76,8 +76,6 @@ class Board extends React.Component {
         }, {})
       );
 
-      console.log(winner);
-
       // Updating state without mutation
       this.setState(Object.assign({}, this.state, { squares: squares, currentPlayer: nextPlayer, winner: winner }));
     }
