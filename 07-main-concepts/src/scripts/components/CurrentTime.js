@@ -7,6 +7,9 @@ class CurrentTime extends React.Component {
     super(props);
 
     this.state = { running: true, time: new Date() };
+
+    //  I do like this, but i read the warnings about onClick={e => this.onClickToggleRunning(e)}, and i don't want to look into experimental alternatives
+    this.onClickToggleRunning = this.onClickToggleRunning.bind(this);
   }
 
   componentDidMount() {
@@ -19,15 +22,24 @@ class CurrentTime extends React.Component {
 
   tick() {
     this.setState((state, props) => {
-      return { user: state.user, time: state.running === true ? new Date() : state.time };
+      return { time: state.running === true ? new Date() : state.time };
+    });
+  }
+
+  onClickToggleRunning(e) {
+    this.setState((state, props) => {
+      return { running: !state.running };
     });
   }
 
   render() {
     return (
-      <h2>
-        It is <DisplayTime time={this.state.time} />
-      </h2>
+      <div>
+        <h2>
+          It is <DisplayTime time={this.state.time} />
+        </h2>
+        <button onClick={this.onClickToggleRunning}>{this.state.running ? "Stop" : "Resume"}</button>
+      </div>
     );
   }
 }
