@@ -1,8 +1,13 @@
 import React from "react";
 
-//  Need to require react because babel compiles this to React.createElement
+import DisplayTime from "./DisplayTime";
+
 function CurrentTime(props) {
-  return <span>It is {props.time.toLocaleTimeString()}</span>;
+  return (
+    <h2>
+      It is <DisplayTime time={props.time} />
+    </h2>
+  );
 }
 
 export default CurrentTime;

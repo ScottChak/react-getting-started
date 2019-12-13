@@ -1,10 +1,12 @@
 import React from "react";
 
 import User from "../schemas/User";
-import UserName from "./UserName";
-import CurrentTime from "./CurrentTime";
 
-const user = new User("Josh", "Perez");
+import WelcomeMessage from "./WelcomeMessage";
+import CurrentTime from "./CurrentTime";
+import UserInfo from "./UserInfo";
+
+const user = new User("Josh", "Perez", "https://eu.ui-avatars.com/api/?name=Josh+Perez&background=0D8ABC&color=fff");
 const delayInMs = 1000;
 
 function getInitialAppState(updateFunction) {
@@ -39,12 +41,9 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1>
-          Hello, <UserName user={this.state.user} /> !
-        </h1>
-        <h2>
-          <CurrentTime time={this.state.time} />
-        </h2>
+        <WelcomeMessage user={this.state.user} />
+        <CurrentTime time={this.state.time} />
+        <UserInfo user={this.state.user} />
       </div>
     );
   }
